@@ -1,0 +1,58 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "🚀 Deploy",
+				"detail": "Run the main playbook with all tasks.",
+				"type": "shell",
+				"command": "ansible-playbook --inventory inventory.yml playbook.yml --vault-password-file ~/.vault",
+				"args": [],
+				"problemMatcher": [],
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				}
+			},
+			{
+				"label": "🧪 Check",
+				"detail": "Check the code without making any changes.",
+				"type": "shell",
+				"command": "ansible-playbook --inventory inventory.yml playbook.yml --check --vault-password-file ~/.vault",
+				"args": [],
+				"problemMatcher": [],
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				}
+			},
+			{
+				"label": "🔑 Edit vault",
+				"detail": "Edits the encrypted vault file.",
+				"type": "shell",
+				"command": "ansible-vault edit ./group_vars/all/vault.yml --vault-password-file ~/.vault",
+				"args": [],
+				"problemMatcher": [],
+				"group": {
+					"kind": "none",
+				},
+				"options": {
+					"env": {
+						"EDITOR": "code -w" // Use VSCode to edit the vault file.
+					}
+				}
+			}
+		]
+	},
+	"settings": {
+		"workbench.colorCustomizations": {
+			"titleBar.activeBackground": "#E57000",
+			"titleBar.activeForeground": "#FFFFFF",
+		}
+	}
+}
