@@ -15,3 +15,9 @@ For the last point *(Web UI on port 443)* the recommendation from the [official 
 ## Workspace
 
 Open the workspace file `ansible-proxmox.code-workspace` to access the predefined build tasks with Visual Studio Code.
+
+## Security
+
+Security-critical data such as passwords or keys are encrypted with Ansible Vault.
+
+> If you read this and find something, I did something wrong and you can email me at [security@thinkbox.center](mailto:security@thinkbox.center).
