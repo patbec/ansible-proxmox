@@ -16,6 +16,20 @@ For the last point *(Web UI on port 443)* the recommendation from the [official 
 
 Open the workspace file `ansible-proxmox.code-workspace` to access the predefined build tasks with Visual Studio Code.
 
+Predefined build tasks:
+| Task         | Description                                |            Command |
+| ------------ | ------------------------------------------ | -----------------: |
+| 🚀 Deploy     | Run the main playbook with all tasks.      | `ansible-playbook` |
+| 🧪 Check      | Check the code without making any changes. | `ansible-playbook` |
+| 🔑 Edit vault | Edits the encrypted vault file.            |    `ansible-vault` |
+
+## Requirements
+
+Prerequisites for this workspace.
+
+- Ansible package
+- Vault file in your home directory (`~/.vault`)
+
 ## Security
 
 Security-critical data such as passwords or keys are encrypted with Ansible Vault.
