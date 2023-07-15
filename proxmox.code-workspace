@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "🚀 Deploy",
+				"detail": "Run the main playbook with all tasks.",
+				"type": "shell",
+				"command": "ansible-playbook --inventory inventory.yml playbook.yml",
+				"args": [],
+				"problemMatcher": [],
+				"group": {
+					"kind": "build",
+					"isDefault": false
+				}
+			},
+			{
+				"label": "🧪 Check",
+				"detail": "Check the code without making any changes.",
+				"type": "shell",
+				"command": "ansible-playbook --inventory inventory.yml playbook.yml --check",
+				"args": [],
+				"problemMatcher": [],
+				"group": {
+					"kind": "build",
+					"isDefault": true
+				}
+			}
+		]
+	}
+}
