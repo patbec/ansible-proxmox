@@ -61,7 +61,7 @@
         - name: Template nginx site
           ansible.builtin.template:
             src: nginx.proxmox.conf.j2
-            dest: /etc/nginx/sites-available/default
+            dest: /etc/nginx/sites-available/proxmox.conf
             owner: root
             group: root
             mode: "0644"
