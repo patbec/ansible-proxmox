@@ -97,6 +97,22 @@
             group: root
             mode: "0644"
 
+        - name: Template nginx watcher configuration
+          ansible.builtin.template:
+            src: nginx.watcher.conf.j2
+            dest: /etc/systemd/system/nginx.watcher.conf
+            owner: root
+            group: root
+            mode: "0644"
+
+        - name: Template nginx watcher path
+          ansible.builtin.template:
+            src: nginx.watcher.path.j2
+            dest: /etc/systemd/system/nginx.watcher.path
+            owner: root
+            group: root
+            mode: "0644"
+
     - name: Stop nginx if configuration has changed
       ansible.builtin.meta: flush_handlers
 
@@ -104,6 +120,11 @@
       ansible.builtin.service:
         name: nginx
         state: started
+        enabled: true
+
+    - name: Ensure watcher is enabled
+      ansible.builtin.service:
+        name: nginx
         enabled: true
 
   handlers:
