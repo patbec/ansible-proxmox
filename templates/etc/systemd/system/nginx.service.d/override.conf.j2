@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+[Unit]
+# The path /etc/pve/local is only available after this service.
+Requires=pve-cluster.service
+After=pve-cluster.service
+
+# The web server requires an existing certificate. The service is only
+# activated if an automatic certificate management environment (ACME)
+# has been set up in Promxox.
+ConditionPathExists=/etc/pve/local/pveproxy-ssl.pem
+ConditionPathExists=/etc/pve/local/pveproxy-ssl.key
+
+# When systemd reload the unit listed here, the action is
+# propagated to this unit. This occurs when the certificate is updated.
+ReloadPropagatedFrom=pveproxy.service

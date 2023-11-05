@@ -1,9 +1,0 @@
-# {{ ansible_managed }}
-
-[Path]
-# Activates the unit whenever it changes. It is not activated on every write to the
-# watched file but it is activated if the file which was open for writing gets closed.
-PathChanged=/etc/pve/local/pveproxy-ssl.pem
-
-[Install]
-WantedBy=multi-user.target
