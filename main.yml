@@ -38,35 +38,46 @@
             state: present
             update_cache: true
 
-    - name: Template login manager configuration
-      ansible.builtin.template:
-        src: logind.conf.j2
-        dest: /etc/systemd/logind.conf
-        owner: root
-        group: root
-        mode: "0644"
-      notify:
-        - Restart login manager
+    - name: Configure systemd
+      block:
+        - name: Update login manager configuration
+          ansible.builtin.template:
+            src: etc/systemd/logind.conf.j2
+            dest: /etc/systemd/logind.conf
+            owner: root
+            group: root
+            mode: "0644"
+          notify:
+            - Restart login manager
 
     - name: Install nginx
       ansible.builtin.apt:
         name:
           - nginx-light
-        policy_rc_d: 101 # Prevent autostart
+        policy_rc_d: 101  # Prevent autostart
 
-    - name: Configure nginx
+    - name: Configure nginx application
       notify:
         - Stop nginx
       block:
-        - name: Template nginx site
+        - name: Template nginx configuration
           ansible.builtin.template:
-            src: nginx.proxmox.conf.j2
+            src: etc/nginx/nginx.conf.j2
+            dest: /etc/nginx/nginx.conf
+            owner: root
+            group: root
+            mode: "0644"
+            validate: nginx -t -c "%s"
+
+        - name: Template proxmox site
+          ansible.builtin.template:
+            src: etc/nginx/sites-available/proxmox.conf.j2
             dest: /etc/nginx/sites-available/proxmox.conf
             owner: root
             group: root
             mode: "0644"
 
-        - name: Enable nginx site
+        - name: Enable proxmox site
           ansible.builtin.file:
             src: /etc/nginx/sites-available/proxmox.conf
             dest: /etc/nginx/sites-enabled/proxmox.conf
@@ -74,15 +85,10 @@
             group: root
             state: link
 
-        - name: Template nginx configuration
-          ansible.builtin.template:
-            src: nginx.conf.j2
-            dest: /etc/nginx/nginx.conf
-            owner: root
-            group: root
-            mode: "0644"
-            validate: nginx -t -c "%s"
-
+    - name: Configure nginx service
+      notify:
+        - Stop nginx
+      block:
         - name: Ensure nginx override folder exists
           ansible.builtin.file:
             path: /etc/systemd/system/nginx.service.d
@@ -91,7 +97,7 @@
 
         - name: Template nginx override configuration
           ansible.builtin.template:
-            src: nginx.service.override.conf.j2
+            src: etc/systemd/system/nginx.service.d/override.conf.j2
             dest: /etc/systemd/system/nginx.service.d/override.conf
             owner: root
             group: root
@@ -111,6 +117,7 @@
       ansible.builtin.service:
         name: nginx
         state: stopped
+        daemon_reload: true
 
     - name: Restart login manager
       ansible.builtin.service:
