@@ -15,12 +15,12 @@
             path: /etc/pve/local/pveproxy-ssl.key
           register: cert_key
 
-        # - name: Ensure that ACME has been set up
-        #   ansible.builtin.assert:
-        #     that:
-        #       - cert_pem.stat.exists == true
-        #       - cert_key.stat.exists == true
-        #     fail_msg: "Certificate was not found, make sure ACME has been set up."
+        - name: Ensure that ACME has been set up
+          ansible.builtin.assert:
+            that:
+              - cert_pem.stat.exists == true
+              - cert_key.stat.exists == true
+            fail_msg: "Certificate was not found, make sure ACME has been set up."
 
     - name: Configure repositories
       block:
