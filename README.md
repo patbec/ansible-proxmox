@@ -14,9 +14,9 @@ For the last point *(Web UI on port 443)* the recommendation from the [official 
 
 ## Webserver
 
-Proxmox provides access to the API and web interface via port `8006`. To offer access via the standard HTTPS port `443`, NGINX is installed in the light version.
+Proxmox provides access to the API and web interface via port `8006`. To offer access via the standard HTTPS port, NGINX is installed in the light version.
 
-NGINX requires a valid certificate, this can be configured via the interface under [ACME](https://pve.proxmox.com/wiki/Certificate_Management). After the correct setup, Proxmox will manage the certificate and renew it automatically. NGINX will use this certificate and **automatically reload it after a renewal by Proxmox**.See the next step for technical details.
+NGINX requires a valid certificate, this can be configured via the interface under [ACME](https://pve.proxmox.com/wiki/Certificate_Management). After the correct setup, Proxmox will manage the certificate and renew it automatically. NGINX will use this certificate and **automatically reload it after a renewal by Proxmox**. See the next step for technical details.
 
 ## How it works
 
