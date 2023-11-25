@@ -12,13 +12,19 @@ The following steps will be performed:
 
 For the last point *(Web UI on port 443)* the recommendation from the [official documentation](https://pve.proxmox.com/wiki/Web_Interface_Via_Nginx_Proxy) was used.
 
-## Preparation
+## Webserver
+
+Proxmox provides access to the API and web interface via port `8006`. To offer access via the standard HTTPS port `443`, NGINX is installed in the light version.
+
+NGINX requires a valid certificate, this can be configured via the interface under [ACME](https://pve.proxmox.com/wiki/Certificate_Management). After the correct setup, Proxmox will manage the certificate and renew it automatically. NGINX will use this certificate and **automatically reload it after a renewal by Proxmox**.See the next step for technical details.
+
+## How it works
 
 Configure on the Proxmox an **ACME** first, so the certificate `/etc/pve/local/pveproxy-ssl.pem` is created.
 
 - If the certificate is renewed by Proxmox, the web server is **automatically reloaded**. This is made possible with the systemd option [`ReloadPropagatedFrom`](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#PropagatesReloadTo=).
 
-- If no ACME has been set up, the service is **ignored when booting**. This is controlled by the [`ConditionPathExists`](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#AssertArchitecture=) option. If the service has been ignored, it remains deactivated until Proxmox is restarted.<br>There is a check in the Ansible playbook if ACME has been set up, without a valid configuration the execution will be **aborted at the beginning**.
+- If no ACME has been set up, the service is **ignored when booting**. This is controlled by the [`ConditionPathExists`](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#AssertArchitecture=) option. If the service has been ignored, it remains deactivated until Proxmox is restarted.<br>There is a check in the Ansible playbook if ACME has been set up, without a valid configuration the execution of the playbook will be **aborted at the beginning**.
 
 - If an existing ACME configuration is deleted in the Proxmox interface, the old certificate files remain available. The NGINX web server remains active and will respond with an expired certificate.
 
